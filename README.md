@@ -111,14 +111,59 @@ commands. Its signature: it breaks down the **literal meaning of every symbol an
 
 ## `RAG_Copilot Tutorials/`
 
-Long-form mini-books and working project notes on RAG / Copilot / LLM systems:
+The deepest material in this repo — long-form **mini-books** and real project notes built around
+**DC-Copilot**, a production RAG system for maintenance work orders. Most of it lives in
+**`Copilot/`**; a small **`SS/`** subfolder holds scheduling-service architecture notes.
 
-- **`Copilot/`** — deep mini-books: *LLM Evaluation, Advanced RAG & Re-Ranking with AWS DBT*
-  (zero-to-expert, marked Depth/Med sections); *Advanced LangGraph & Token/Prompt Optimization*
-  (20 chapters, fixed template); plus a multi-model routing strategy, auto-summary plans/rules,
-  and annual study/goal timelines.
-- **`SS/`** — architecture-differences notes and a Lambda data-retention prompt for a
-  scheduling-service project (internal service names generalised).
+### 📕 The two flagship mini-books (`Copilot/`)
+
+**1. `minibook_llm_rag_evaluation_dbt.md` — LLM Evaluation, Advanced RAG, Re-Ranking & AWS DBT**
+*(~14,000 lines · "Zero to Expert")*
+A practitioner's guide to **knowing whether your RAG system is actually good**. Sections are
+tagged **(Depth)** = exhaustive first-principles deep-dive, or **(Med)** = concise-but-complete.
+Every concept is grounded in the DC-Copilot RAG system alongside general examples.
+- **Evaluation metrics, one per section** — BLEU, ROUGE, METEOR, BERTScore, Perplexity; the full
+  **RAGAS** suite (Faithfulness, Answer Relevancy, Context Precision/Recall/Relevancy, Answer
+  Correctness & Semantic Similarity); Human eval; **LLM-as-a-Judge**; custom domain metrics — plus
+  a head-to-head comparison of all of them.
+- **Advanced RAG & Re-Ranking** — retrieval quality, re-ranking methods.
+- **AWS + dbt** — data/transformation layer for the eval pipeline.
+- Ends with a **glossary & index** defining every term used.
+
+**2. `langgraph_minibook_advanced_token_optimization.md` — Advanced LangGraph & Token/Prompt
+Optimization** *(~30,000 lines · 20 chapters)*
+The Production Engineer's minibook, in two parts, where **every chapter follows an identical
+23-section template** (Also-Known-As → layman explanation → depth → do's/don'ts → real scenarios…)
+so topics compare side-by-side.
+- **Part 1 — Advanced LangGraph:** human-in-the-loop, graph persistence & time-travel debugging,
+  dynamic graph construction, multi-agent orchestration, streaming/async, error-recovery & retry
+  nodes, LangSmith observability, subgraph composition, map-reduce patterns, framework alternatives.
+- **Part 2 — Token/Prompt Optimization:** context-window management, message compaction/
+  summarization, and cost/latency reduction techniques.
+
+### 🛠️ Copilot project notes (`Copilot/`)
+
+Real design & implementation docs from the DC-Copilot work (internal service names generalised):
+- **`multi_model_strategy_plan.md`** — per-node model routing for the chat API & auto-summarisation
+  (routing cheap tasks to `gpt-4o-mini`) to cut ~30% latency; includes before/after latency
+  breakdowns.
+- **`rules_auto_summary_source_type_rules.md`** — the "golden rule" + six work-order source-type
+  cases for auto-summary (asset/site/location combinations).
+- **`auto_summary_all_source_types_plan.md`** — implementation plan to extend auto-summary to all
+  source types (site/location array handling, test status).
+- **`MINIBOOK_CONTINUATION_PROMPT.md`** & **`PROMPT_FORMAT_CH7_DOCX.md`** — the authoring prompts &
+  23-section template used to generate/format the mini-books consistently.
+
+### 📅 Career tracking (`Copilot/`)
+
+- **`annual_goals_and_study_timeline.md`** — 7 annual goals (production excellence, LLM/RAG depth,
+  infra ownership, platform thinking, collaboration, tech leadership, growth) + a phased study plan.
+- **`annual_goals_tracking.md`** — the live progress tracker: per-phase topic checklists
+  (LLM/RAG eval, Terraform, advanced RAG, re-ranking, dbt) + a weekly manager-review log.
+
+### `SS/`
+Scheduling-service architecture notes — `ARCHITECTURE_DIFFERENCES.md` (current vs target) and a
+Lambda data-retention prompt.
 
 ---
 
