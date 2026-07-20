@@ -18,7 +18,7 @@ Pick the folder that matches your goal, then jump to its section below.
 | [`system_design_course/`](system_design_course/) | 14-chapter AI/ML system-design course (fundamentals) | Hinglish | `00_START_HERE.md` |
 | [`system_design_course_advanced/`](system_design_course_advanced/) | Principal-level deep-dives (LLM serving at scale) | Hinglish | `A1_llm_inference_serving.md` |
 | [`shell_scripting_guide/`](shell_scripting_guide/) | 18-chapter Unix/Linux/bash guide (terminal → production) | Hinglish | `01_terminal_aur_shell.md` |
-| [`mydocs/`](mydocs/) | Long-form mini-books & project notes (RAG eval, LangGraph) | English | `Copilot/` |
+| [`RAG_Copilot Tutorials/`](RAG_Copilot%20Tutorials/) | Long-form mini-books & project notes (RAG eval, LangGraph) | English | `Copilot/` |
 
 > **Two languages by design:** the Python guide & interview prep are in **English**; the DSA,
 > system-design, and shell guides are in **Hinglish** (Hindi + English, Roman script) — a plain,
@@ -109,9 +109,9 @@ commands. Its signature: it breaks down the **literal meaning of every symbol an
 
 ---
 
-## `mydocs/`
+## `RAG_Copilot Tutorials/`
 
-Long-form mini-books and working project notes (some also as `.docx`):
+Long-form mini-books and working project notes on RAG / Copilot / LLM systems:
 
 - **`Copilot/`** — deep mini-books: *LLM Evaluation, Advanced RAG & Re-Ranking with AWS DBT*
   (zero-to-expert, marked Depth/Med sections); *Advanced LangGraph & Token/Prompt Optimization*
@@ -131,7 +131,7 @@ Long-form mini-books and working project notes (some also as `.docx`):
 | Learn / revise DSA | `dsa_guide/` — read a chapter, then practise that pattern |
 | Learn ML system design | `system_design_course/` → `system_design_course_advanced/` |
 | Get comfortable in the terminal | `shell_scripting_guide/` |
-| Reference RAG/LLM project work | `mydocs/` |
+| Reference RAG/LLM project work | `RAG_Copilot Tutorials/` |
 
 > **On practice:** these guides teach the *patterns and reasoning* — a strong base, but not a
 > substitute for doing. For DSA especially, pair the guide with ~100–150 LeetCode problems
