@@ -19,6 +19,7 @@ Pick the folder that matches your goal, then jump to its section below.
 | [`system_design_course_advanced/`](system_design_course_advanced/) | Principal-level deep-dives (LLM serving at scale) | Hinglish | `A1_llm_inference_serving.md` |
 | [`shell_scripting_guide/`](shell_scripting_guide/) | 18-chapter Unix/Linux/bash guide (terminal → production) | Hinglish | `01_terminal_aur_shell.md` |
 | [`RAG_Copilot Tutorials/`](RAG_Copilot%20Tutorials/) | Long-form mini-books & project notes (RAG eval, LangGraph) | English | `Copilot/` |
+| [`Schedular CP-SAT/`](Schedular%20CP-SAT/) | CP-SAT scheduling demo + architecture notes | English | `scheduling-demo/README.md` |
 
 > **Two languages by design:** the Python guide & interview prep are in **English**; the DSA,
 > system-design, and shell guides are in **Hinglish** (Hindi + English, Roman script) — a plain,
@@ -112,8 +113,8 @@ commands. Its signature: it breaks down the **literal meaning of every symbol an
 ## `RAG_Copilot Tutorials/`
 
 The deepest material in this repo — long-form **mini-books** and real project notes built around
-**DC-Copilot**, a production RAG system for maintenance work orders. Most of it lives in
-**`Copilot/`**; a small **`SS/`** subfolder holds scheduling-service architecture notes.
+**DC-Copilot**, a production RAG system for maintenance work orders. All content lives in
+**`Copilot/`**.
 
 ### 📕 The two flagship mini-books (`Copilot/`)
 
@@ -161,9 +162,22 @@ Real design & implementation docs from the DC-Copilot work (internal service nam
 - **`annual_goals_tracking.md`** — the live progress tracker: per-phase topic checklists
   (LLM/RAG eval, Terraform, advanced RAG, re-ranking, dbt) + a weekly manager-review log.
 
-### `SS/`
-Scheduling-service architecture notes — `ARCHITECTURE_DIFFERENCES.md` (current vs target) and a
-Lambda data-retention prompt.
+---
+
+## `Schedular CP-SAT/`
+
+Constraint-programming scheduling work — a **CP-SAT demo** and architecture notes from the Smart
+Scheduler service.
+
+- **`scheduling-demo/`** — a simplified, interview-ready replica of the Smart Scheduler's core
+  logic using Google OR-Tools CP-SAT. Five files walk through the full pipeline: data models →
+  task-crew eligibility mapping → CP-SAT solver (variables, constraints, objective) → FastAPI
+  endpoint → sample run. Includes a detailed README explaining each file, the 4-step solve pattern,
+  API usage with sample request/response, and key interview talking points.
+- **`ARCHITECTURE_DIFFERENCES.md`** — current vs target scheduling-service architecture.
+- **`PROMPT_LAMBDA_DATA_RETENTION.md`** — Lambda data-retention design prompt.
+
+▶️ Start at **`scheduling-demo/README.md`**.
 
 ---
 
@@ -177,6 +191,7 @@ Lambda data-retention prompt.
 | Learn ML system design | `system_design_course/` → `system_design_course_advanced/` |
 | Get comfortable in the terminal | `shell_scripting_guide/` |
 | Reference RAG/LLM project work | `RAG_Copilot Tutorials/` |
+| Understand CP-SAT scheduling | `Schedular CP-SAT/` → `scheduling-demo/README.md` |
 
 > **On practice:** these guides teach the *patterns and reasoning* — a strong base, but not a
 > substitute for doing. For DSA especially, pair the guide with ~100–150 LeetCode problems
