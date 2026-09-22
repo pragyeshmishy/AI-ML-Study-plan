@@ -1,0 +1,400 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Google-Scale Architecture Diagrams</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&family=Libre+Franklin:wght@400;500;600&display=swap">
+<style>
+:root {
+  --bg: #f5f4f0; --surface: #ffffff; --surface2: #fafaf8;
+  --text: #1a1a1a; --text2: #555550; --text3: #888883;
+  --accent: #d4522a; --blue: #2563eb; --teal: #0d9488;
+  --green: #16a34a; --purple: #7c3aed; --amber: #d97706;
+  --red: #dc2626; --pink: #db2777;
+  --border: #e0ddd6; --border2: #ccc9c0;
+  --card-shadow: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
+  --diagram-bg: #fdfcfa;
+  --node-text: #1a1a1a;
+  --connector: #94a3b8;
+}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#111116; --surface:#1c1c24; --surface2:#22222c;
+  --text:#e4e2dc; --text2:#9e9c95; --text3:#6b6965;
+  --accent:#e8764e; --blue:#60a5fa; --teal:#2dd4bf;
+  --green:#4ade80; --purple:#a78bfa; --amber:#fbbf24;
+  --red:#f87171; --pink:#f472b6;
+  --border:#2a2a34; --border2:#3a3a44;
+  --card-shadow: 0 1px 3px rgba(0,0,0,.3);
+  --diagram-bg:#181820;
+  --node-text:#e4e2dc;
+  --connector:#64748b;
+}}
+:root[data-theme="dark"]{
+  --bg:#111116; --surface:#1c1c24; --surface2:#22222c;
+  --text:#e4e2dc; --text2:#9e9c95; --text3:#6b6965;
+  --accent:#e8764e; --blue:#60a5fa; --teal:#2dd4bf;
+  --green:#4ade80; --purple:#a78bfa; --amber:#fbbf24;
+  --red:#f87171; --pink:#f472b6;
+  --border:#2a2a34; --border2:#3a3a44;
+  --card-shadow: 0 1px 3px rgba(0,0,0,.3);
+  --diagram-bg:#181820;
+  --node-text:#e4e2dc;
+  --connector:#64748b;
+}
+*{box-sizing:border-box}
+body{font-family:'Libre Franklin',system-ui,sans-serif;background:var(--bg);color:var(--text);max-width:1080px;margin:0 auto;padding:0 24px;line-height:1.6;font-size:15px}
+h1,h2,h3{font-family:'Outfit',sans-serif;text-wrap:balance;line-height:1.2}
+h1{font-size:1.9rem;font-weight:800;margin:2.5rem 0 .3rem;letter-spacing:-.03em}
+h1 .hl{color:var(--accent)}
+.lead{color:var(--text2);font-size:.95rem;margin-bottom:2rem;max-width:700px}
+h2{font-size:1.3rem;font-weight:700;margin:3rem 0 .3rem;color:var(--text)}
+h2 .num{color:var(--accent);margin-right:6px}
+.h2-sub{color:var(--text2);font-size:.88rem;margin:0 0 1.2rem}
+h3{font-size:1rem;font-weight:600;margin:1.5rem 0 .4rem;color:var(--blue)}
+
+/* Stats row */
+.stats{display:flex;gap:10px;flex-wrap:wrap;margin:1.5rem 0 2.5rem}
+.st{flex:1;min-width:120px;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px;box-shadow:var(--card-shadow)}
+.st .v{font-family:'Outfit';font-size:1.7rem;font-weight:800;line-height:1}
+.st .v.or{color:var(--accent)}.st .v.bl{color:var(--blue)}.st .v.gr{color:var(--green)}.st .v.am{color:var(--amber)}.st .v.pu{color:var(--purple)}
+.st .l{font-size:.72rem;color:var(--text3);margin-top:4px;text-transform:uppercase;letter-spacing:.06em;font-weight:500}
+
+/* Diagram container */
+.diagram{background:var(--diagram-bg);border:1px solid var(--border);border-radius:12px;padding:24px 20px;margin:1.2rem 0 2rem;overflow-x:auto;box-shadow:var(--card-shadow)}
+.diagram svg{display:block;margin:0 auto}
+
+/* Annotation */
+.ann{font-size:.82rem;color:var(--text2);margin:.6rem 0;padding-left:16px;border-left:3px solid var(--border2)}
+.ann strong{color:var(--text)}
+
+/* Tables */
+table{width:100%;border-collapse:collapse;font-size:.85rem;margin:1rem 0;font-variant-numeric:tabular-nums}
+th{text-align:left;font-family:'Outfit';font-weight:600;font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);padding:10px 12px;border-bottom:2px solid var(--border)}
+td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+td:first-child{font-weight:500}
+tr:hover td{background:var(--surface2)}
+
+/* Callout */
+.co{background:var(--surface);border:1px solid var(--border);border-left:4px solid var(--accent);border-radius:0 8px 8px 0;padding:14px 18px;margin:1.2rem 0;font-size:.88rem}
+.co b{color:var(--accent)}
+
+/* Mono */
+.mono{font-family:'IBM Plex Mono',monospace;font-size:.82rem}
+
+/* Tag pills */
+.tag{display:inline-block;font-family:'Outfit';font-size:.68rem;font-weight:600;padding:2px 8px;border-radius:4px;letter-spacing:.04em;vertical-align:middle}
+.tag.or{background:#fef3c7;color:#92400e}.tag.bl{background:#dbeafe;color:#1e40af}.tag.gr{background:#dcfce7;color:#166534}.tag.rd{background:#fee2e2;color:#991b1b}.tag.pu{background:#ede9fe;color:#5b21b6}
+:root[data-theme="dark"] .tag.or,:root:not([data-theme="light"]) .tag.or{background:#451a03;color:#fbbf24}
+:root[data-theme="dark"] .tag.bl,:root:not([data-theme="light"]) .tag.bl{background:#172554;color:#60a5fa}
+:root[data-theme="dark"] .tag.gr,:root:not([data-theme="light"]) .tag.gr{background:#052e16;color:#4ade80}
+:root[data-theme="dark"] .tag.rd,:root:not([data-theme="light"]) .tag.rd{background:#450a0a;color:#f87171}
+:root[data-theme="dark"] .tag.pu,:root:not([data-theme="light"]) .tag.pu{background:#2e1065;color:#a78bfa}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .tag.or{background:#451a03;color:#fbbf24}:root:not([data-theme="light"]) .tag.bl{background:#172554;color:#60a5fa}:root:not([data-theme="light"]) .tag.gr{background:#052e16;color:#4ade80}:root:not([data-theme="light"]) .tag.rd{background:#450a0a;color:#f87171}:root:not([data-theme="light"]) .tag.pu{background:#2e1065;color:#a78bfa}}
+
+@media(max-width:640px){h1{font-size:1.5rem}.stats{gap:8px}.st{min-width:100px;padding:12px}.st .v{font-size:1.3rem}.diagram{padding:16px 12px}}
+</style>
+</head>
+<body>
+
+<h1>Google-Scale <span class="hl">Conversational AI</span> Architecture</h1>
+<p class="lead">1B users, 50M concurrent, 150ms TTFT, long-term memory — 4 architecture diagrams with quantitative numbers. Companion to the detailed markdown guide.</p>
+
+<div class="stats">
+  <div class="st"><div class="v or">1B</div><div class="l">Total Users</div></div>
+  <div class="st"><div class="v bl">50M</div><div class="l">Concurrent</div></div>
+  <div class="st"><div class="v gr">150ms</div><div class="l">First Token</div></div>
+  <div class="st"><div class="v am">1,200</div><div class="l">A100 GPUs</div></div>
+  <div class="st"><div class="v pu">140TB</div><div class="l">Memory Store</div></div>
+</div>
+
+<!-- ═══════════════ DIAGRAM 1: REQUEST FLOW ═══════════════ -->
+<h2><span class="num">01</span> Request Flow — User se LLM tak, har hop ka latency</h2>
+<p class="h2-sub">Ek user message ka poora journey: 150ms mein first token kaise aata hai</p>
+
+<div class="diagram">
+<svg viewBox="0 0 960 680" xmlns="http://www.w3.org/2000/svg" font-family="Outfit, system-ui, sans-serif">
+  <defs>
+    <marker id="a1" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6Z" fill="var(--connector)"/></marker>
+    <filter id="ds"><feDropShadow dx="0" dy="1" stdDeviation="2" flood-opacity=".08"/></filter>
+    <linearGradient id="g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--accent)" stop-opacity=".12"/><stop offset="1" stop-color="var(--accent)" stop-opacity=".03"/></linearGradient>
+    <linearGradient id="g2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--blue)" stop-opacity=".12"/><stop offset="1" stop-color="var(--blue)" stop-opacity=".03"/></linearGradient>
+    <linearGradient id="g3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--green)" stop-opacity=".12"/><stop offset="1" stop-color="var(--green)" stop-opacity=".03"/></linearGradient>
+    <linearGradient id="g4" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--red)" stop-opacity=".15"/><stop offset="1" stop-color="var(--red)" stop-opacity=".03"/></linearGradient>
+    <linearGradient id="g5" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--purple)" stop-opacity=".12"/><stop offset="1" stop-color="var(--purple)" stop-opacity=".03"/></linearGradient>
+  </defs>
+
+  <!-- USER -->
+  <rect x="380" y="12" width="200" height="52" rx="26" fill="url(#g1)" stroke="var(--accent)" stroke-width="1.5" filter="url(#ds)"/>
+  <text x="480" y="43" text-anchor="middle" font-weight="700" font-size="14" fill="var(--accent)">User (50M concurrent)</text>
+
+  <line x1="480" y1="64" x2="480" y2="96" stroke="var(--connector)" stroke-width="1.5" marker-end="url(#a1)"/>
+  <text x="500" y="85" font-size="10" fill="var(--text3)" font-weight="500">2ms</text>
+
+  <!-- EDGE -->
+  <rect x="280" y="100" width="400" height="62" rx="10" fill="url(#g1)" stroke="var(--accent)" stroke-width="1.2" filter="url(#ds)"/>
+  <text x="480" y="122" text-anchor="middle" font-weight="700" font-size="13" fill="var(--accent)">EDGE LAYER</text>
+  <text x="480" y="140" text-anchor="middle" font-size="10" fill="var(--text2)">Anycast DNS → 300+ PoPs → TLS termination → WebSocket upgrade</text>
+  <text x="690" y="122" font-size="9" font-weight="600" fill="var(--accent)">3ms</text>
+
+  <line x1="480" y1="162" x2="480" y2="194" stroke="var(--connector)" stroke-width="1.5" marker-end="url(#a1)"/>
+  <text x="500" y="183" font-size="10" fill="var(--text3)" font-weight="500">gRPC</text>
+
+  <!-- GATEWAY -->
+  <rect x="250" y="198" width="460" height="62" rx="10" fill="url(#g2)" stroke="var(--blue)" stroke-width="1.2" filter="url(#ds)"/>
+  <text x="480" y="220" text-anchor="middle" font-weight="700" font-size="13" fill="var(--blue)">REGIONAL GATEWAY — 500 Envoy Nodes</text>
+  <text x="480" y="240" text-anchor="middle" font-size="10" fill="var(--text2)">100K conn/node · Rate limiting · Session affinity routing · 8 regions</text>
+  <text x="720" y="220" font-size="9" font-weight="600" fill="var(--blue)">5ms</text>
+
+  <line x1="480" y1="260" x2="480" y2="292" stroke="var(--connector)" stroke-width="1.5" marker-end="url(#a1)"/>
+
+  <!-- COMPUTE LAYER -->
+  <rect x="140" y="296" width="680" height="130" rx="12" fill="url(#g2)" stroke="var(--blue)" stroke-width="1.2" filter="url(#ds)"/>
+  <text x="480" y="318" text-anchor="middle" font-weight="700" font-size="13" fill="var(--blue)">COMPUTE — 10,000 K8s Pods</text>
+
+  <!-- Sub-boxes inside compute -->
+  <!-- State load -->
+  <rect x="160" y="330" width="150" height="46" rx="8" fill="var(--surface)" stroke="var(--border2)" stroke-width="1"/>
+  <text x="235" y="349" text-anchor="middle" font-weight="600" font-size="10" fill="var(--node-text)">State Load (DAX)</text>
+  <text x="235" y="365" text-anchor="middle" font-size="9" fill="var(--text3)">&lt;1ms · Redis → DAX → DDB</text>
+
+  <!-- Intent -->
+  <rect x="325" y="330" width="150" height="46" rx="8" fill="var(--surface)" stroke="var(--border2)" stroke-width="1"/>
+  <text x="400" y="349" text-anchor="middle" font-weight="600" font-size="10" fill="var(--node-text)">Intent (DistilBERT)</text>
+  <text x="400" y="365" text-anchor="middle" font-size="9" fill="var(--text3)">2ms · Local · No GPU</text>
+
+  <!-- Memory Retrieval -->
+  <rect x="490" y="330" width="160" height="46" rx="8" fill="var(--surface)" stroke="var(--border2)" stroke-width="1"/>
+  <text x="570" y="349" text-anchor="middle" font-weight="600" font-size="10" fill="var(--node-text)">Memory Retrieve</text>
+  <text x="570" y="365" text-anchor="middle" font-size="9" fill="var(--text3)">7ms · Redis+Bigtable+Milvus</text>
+
+  <!-- Context -->
+  <rect x="665" y="330" width="140" height="46" rx="8" fill="var(--surface)" stroke="var(--border2)" stroke-width="1"/>
+  <text x="735" y="349" text-anchor="middle" font-weight="600" font-size="10" fill="var(--node-text)">Vector Search</text>
+  <text x="735" y="365" text-anchor="middle" font-size="9" fill="var(--text3)">5ms · Milvus kNN</text>
+
+  <text x="160" y="415" font-size="9" fill="var(--text3)">Parallel execution: State + Intent + Memory + Vector = max(1, 2, 7, 5) = 7ms effective</text>
+  <text x="730" y="318" font-size="9" font-weight="600" fill="var(--blue)">~10ms total</text>
+
+  <line x1="480" y1="426" x2="480" y2="458" stroke="var(--connector)" stroke-width="1.5" marker-end="url(#a1)"/>
+  <text x="500" y="447" font-size="10" fill="var(--text3)" font-weight="500">prompt built</text>
+
+  <!-- LLM INFERENCE (the big one) -->
+  <rect x="180" y="462" width="600" height="100" rx="12" fill="url(#g4)" stroke="var(--red)" stroke-width="1.8" filter="url(#ds)"/>
+  <text x="480" y="487" text-anchor="middle" font-weight="800" font-size="15" fill="var(--red)">LLM INFERENCE — vLLM on 1,200 A100 GPUs</text>
+  <text x="790" y="487" font-size="11" font-weight="700" fill="var(--red)">100ms</text>
+
+  <!-- Model routing inside -->
+  <rect x="210" y="500" width="130" height="36" rx="6" fill="var(--surface)" stroke="var(--green)" stroke-width="1"/>
+  <text x="275" y="516" text-anchor="middle" font-weight="600" font-size="9.5" fill="var(--green)">7B Mistral</text>
+  <text x="275" y="529" text-anchor="middle" font-size="8" fill="var(--text3)">60% traffic · 20ms</text>
+
+  <rect x="355" y="500" width="130" height="36" rx="6" fill="var(--surface)" stroke="var(--amber)" stroke-width="1"/>
+  <text x="420" y="516" text-anchor="middle" font-weight="600" font-size="9.5" fill="var(--amber)">13B Llama</text>
+  <text x="420" y="529" text-anchor="middle" font-size="8" fill="var(--text3)">25% traffic · 50ms</text>
+
+  <rect x="500" y="500" width="150" height="36" rx="6" fill="var(--surface)" stroke="var(--red)" stroke-width="1"/>
+  <text x="575" y="516" text-anchor="middle" font-weight="600" font-size="9.5" fill="var(--red)">70B Llama + Spec.Dec</text>
+  <text x="575" y="529" text-anchor="middle" font-size="8" fill="var(--text3)">15% traffic · 100ms</text>
+
+  <rect x="665" y="500" width="100" height="36" rx="6" fill="var(--surface)" stroke="var(--purple)" stroke-width="1"/>
+  <text x="715" y="516" text-anchor="middle" font-weight="600" font-size="9.5" fill="var(--purple)">KV Cache</text>
+  <text x="715" y="529" text-anchor="middle" font-size="8" fill="var(--text3)">PagedAttention</text>
+
+  <line x1="480" y1="562" x2="480" y2="594" stroke="var(--connector)" stroke-width="1.5" marker-end="url(#a1)"/>
+  <text x="500" y="583" font-size="10" fill="var(--text3)" font-weight="500">first token</text>
+
+  <!-- STREAM BACK -->
+  <rect x="300" y="598" width="360" height="50" rx="10" fill="url(#g3)" stroke="var(--green)" stroke-width="1.2" filter="url(#ds)"/>
+  <text x="480" y="618" text-anchor="middle" font-weight="700" font-size="13" fill="var(--green)">STREAM TO USER — 7ms</text>
+  <text x="480" y="636" text-anchor="middle" font-size="10" fill="var(--text2)">gRPC → Envoy → WebSocket · Token batching (50ms window, 3-5 tokens)</text>
+
+  <!-- TOTAL -->
+  <rect x="320" y="660" width="320" height="16" rx="4" fill="var(--accent)" opacity=".9"/>
+  <text x="480" y="673" text-anchor="middle" font-weight="700" font-size="10" fill="#fff" letter-spacing=".05em">TOTAL TTFT: ~125ms (25ms buffer to 150ms SLO)</text>
+</svg>
+</div>
+
+<p class="ann"><strong>Sabse bada savings:</strong> Intent classification LLM→DistilBERT = 198ms saved. Azure OpenAI→self-hosted vLLM = 200ms+ saved. DAX cache = 14ms saved. Combined: 815ms→125ms (6.5x improvement).</p>
+
+
+<!-- ═══════════════ DIAGRAM 2: MEMORY PYRAMID ═══════════════ -->
+<h2><span class="num">02</span> 5-Tier Memory Architecture — Doctor-Patient Analogy</h2>
+<p class="h2-sub">Human brain jaisi memory: hot → warm → cold, with forgetting curve</p>
+
+<div class="diagram">
+<svg viewBox="0 0 960 560" xmlns="http://www.w3.org/2000/svg" font-family="Outfit, system-ui, sans-serif">
+
+  <!-- Tier 1 -->
+  <polygon points="390,20 570,20 610,108 350,108" fill="var(--red)" fill-opacity=".1" stroke="var(--red)" stroke-width="1.5"/>
+  <text x="480" y="48" text-anchor="middle" font-weight="700" font-size="14" fill="var(--red)">WORKING MEMORY</text>
+  <text x="480" y="68" text-anchor="middle" font-size="11" fill="var(--node-text)">Redis Cluster · 64 shards</text>
+  <text x="480" y="85" text-anchor="middle" font-size="10" fill="var(--text2)">400GB · &lt;0.5ms · TTL: session</text>
+  <text x="480" y="100" text-anchor="middle" font-size="9" fill="var(--text3)">"Abhi kya baat ho rahi hai" — current conversation</text>
+
+  <!-- Tier 2 -->
+  <polygon points="350,116 610,116 660,204 300,204" fill="var(--amber)" fill-opacity=".1" stroke="var(--amber)" stroke-width="1.5"/>
+  <text x="480" y="142" text-anchor="middle" font-weight="700" font-size="14" fill="var(--amber)">SESSION MEMORY</text>
+  <text x="480" y="162" text-anchor="middle" font-size="11" fill="var(--node-text)">DynamoDB Global Tables + DAX</text>
+  <text x="480" y="179" text-anchor="middle" font-size="10" fill="var(--text2)">1TB · &lt;1ms (DAX) · TTL: 30 days</text>
+  <text x="480" y="196" text-anchor="middle" font-size="9" fill="var(--text3)">"Kal kya baat hui thi" — full conversation checkpoints</text>
+
+  <!-- Tier 3 -->
+  <polygon points="300,212 660,212 720,300 240,300" fill="var(--green)" fill-opacity=".1" stroke="var(--green)" stroke-width="1.5"/>
+  <text x="480" y="238" text-anchor="middle" font-weight="700" font-size="14" fill="var(--green)">EPISODIC MEMORY</text>
+  <text x="480" y="258" text-anchor="middle" font-size="11" fill="var(--node-text)">Bigtable · Row key: user_id#reverse_timestamp</text>
+  <text x="480" y="275" text-anchor="middle" font-size="10" fill="var(--text2)">100TB · &lt;5ms · 1B users × 100 episodes × 1KB</text>
+  <text x="480" y="292" text-anchor="middle" font-size="9" fill="var(--text3)">"6 mahine pehle AC compressor repair ki thi" — Decay: retention = e^(-t/S)</text>
+
+  <!-- Tier 4 -->
+  <polygon points="240,308 720,308 790,396 170,396" fill="var(--blue)" fill-opacity=".1" stroke="var(--blue)" stroke-width="1.5"/>
+  <text x="480" y="334" text-anchor="middle" font-weight="700" font-size="14" fill="var(--blue)">SEMANTIC MEMORY</text>
+  <text x="480" y="354" text-anchor="middle" font-size="11" fill="var(--node-text)">Bigtable (facts) + Milvus (vector search)</text>
+  <text x="480" y="371" text-anchor="middle" font-size="10" fill="var(--text2)">25TB structured + 60TB vectors · &lt;10ms · Permanent, no decay</text>
+  <text x="480" y="388" text-anchor="middle" font-size="9" fill="var(--text3)">"User Hindi prefer karta hai, diabetic hai" — permanent facts</text>
+
+  <!-- Tier 5 -->
+  <polygon points="170,404 790,404 860,492 100,492" fill="var(--purple)" fill-opacity=".1" stroke="var(--purple)" stroke-width="1.5"/>
+  <text x="480" y="430" text-anchor="middle" font-weight="700" font-size="14" fill="var(--purple)">PROCEDURAL MEMORY</text>
+  <text x="480" y="450" text-anchor="middle" font-size="11" fill="var(--node-text)">Neo4j / JanusGraph (Graph DB)</text>
+  <text x="480" y="467" text-anchor="middle" font-size="10" fill="var(--text2)">10TB · &lt;15ms · 1B users × 5 workflows × 2KB</text>
+  <text x="480" y="484" text-anchor="middle" font-size="9" fill="var(--text3)">"User pehle diagnosis maangta hai, phir spare parts, phir time" — learned workflows</text>
+
+  <!-- Left labels -->
+  <text x="60" y="60" font-size="11" font-weight="600" fill="var(--red)">HOT</text>
+  <text x="52" y="76" font-size="9" fill="var(--text3)">&lt;1ms</text>
+  <text x="60" y="460" font-size="11" font-weight="600" fill="var(--purple)">COLD</text>
+  <text x="48" y="476" font-size="9" fill="var(--text3)">&lt;15ms</text>
+  <line x1="80" y1="88" x2="80" y2="440" stroke="var(--connector)" stroke-width="1" stroke-dasharray="4"/>
+  <text x="30" y="270" font-size="9" font-weight="600" fill="var(--text3)" transform="rotate(-90,30,270)">ACCESS LATENCY</text>
+
+  <!-- Right labels -->
+  <text x="870" y="64" font-size="10" font-weight="600" fill="var(--text2)">400GB</text>
+  <text x="870" y="160" font-size="10" font-weight="600" fill="var(--text2)">1TB</text>
+  <text x="870" y="256" font-size="10" font-weight="600" fill="var(--text2)">100TB</text>
+  <text x="870" y="352" font-size="10" font-weight="600" fill="var(--text2)">85TB</text>
+  <text x="870" y="448" font-size="10" font-weight="600" fill="var(--text2)">10TB</text>
+  <text x="895" y="270" font-size="9" font-weight="600" fill="var(--text3)" transform="rotate(90,895,270)">STORAGE SIZE</text>
+
+  <!-- Bottom summary -->
+  <rect x="200" y="510" width="560" height="40" rx="8" fill="var(--surface)" stroke="var(--border2)"/>
+  <text x="480" y="530" text-anchor="middle" font-size="11" fill="var(--node-text)"><tspan font-weight="700">Total:</tspan> ~196TB storage · ~$136K/month · $0.0016/user/year · Ebbinghaus forgetting curve</text>
+  <text x="480" y="546" text-anchor="middle" font-size="9" fill="var(--text3)">Memories recalled 5+ times become permanent (strength S → ∞)</text>
+</svg>
+</div>
+
+<p class="ann"><strong>Doctor analogy:</strong> Working = aaj ki baat. Session = pichli appointment. Episodic = "2 saal pehle allergic reaction hua tha." Semantic = "patient diabetic hai." Procedural = "is patient ko diagrams se samjhaao."</p>
+
+
+<!-- ═══════════════ DIAGRAM 3: GLOBAL INFRA ═══════════════ -->
+<h2><span class="num">03</span> Global Infrastructure — 8 Regions, Per-Region Breakdown</h2>
+<p class="h2-sub">Har region ka Envoy, pods, GPUs, aur data layer</p>
+
+<table>
+<tr>
+  <th>Region</th><th>Location</th><th>Users</th>
+  <th>Envoy Nodes</th><th>API Pods</th><th>GPUs (A100)</th>
+  <th>Redis</th><th>Milvus Shards</th>
+</tr>
+<tr><td>us-east-1</td><td>Virginia</td><td><strong>8M</strong></td><td>80</td><td>1,600</td><td>528</td><td>50GB / 8sh</td><td>25</td></tr>
+<tr><td>us-west-2</td><td>Oregon</td><td>5M</td><td>50</td><td>1,000</td><td>330</td><td>31GB / 5sh</td><td>16</td></tr>
+<tr><td>eu-west-1</td><td>Ireland</td><td><strong>7M</strong></td><td>70</td><td>1,400</td><td>462</td><td>44GB / 7sh</td><td>22</td></tr>
+<tr><td>eu-central-1</td><td>Frankfurt</td><td>5M</td><td>50</td><td>1,000</td><td>330</td><td>31GB / 5sh</td><td>16</td></tr>
+<tr><td><strong>ap-south-1</strong></td><td><strong>Mumbai</strong></td><td><strong>10M</strong></td><td><strong>100</strong></td><td><strong>2,000</strong></td><td><strong>660</strong></td><td><strong>63GB / 10sh</strong></td><td><strong>31</strong></td></tr>
+<tr><td>ap-northeast-1</td><td>Tokyo</td><td>6M</td><td>60</td><td>1,200</td><td>396</td><td>38GB / 6sh</td><td>19</td></tr>
+<tr><td>ap-southeast-1</td><td>Singapore</td><td>5M</td><td>50</td><td>1,000</td><td>330</td><td>31GB / 5sh</td><td>16</td></tr>
+<tr><td>sa-east-1</td><td>São Paulo</td><td>4M</td><td>40</td><td>800</td><td>264</td><td>25GB / 4sh</td><td>13</td></tr>
+<tr style="font-weight:700;border-top:2px solid var(--border2)">
+  <td colspan="2">TOTAL</td><td>50M</td><td>500</td><td>10,000</td><td>3,300*</td><td>400GB / 64sh</td><td>200</td>
+</tr>
+</table>
+<p class="ann"><strong>*3,300 without model routing. With routing (60%→7B, 25%→13B, 15%→70B) actual need = 1,200 A100s.</strong> Savings: 73% GPUs = ~$3.8M/month saved. Mumbai biggest region — India ka 1.4B population + high smartphone adoption. Each region at 60% capacity, 40% reserved for failover absorption.</p>
+
+
+<!-- ═══════════════ DIAGRAM 4: BEFORE / AFTER ═══════════════ -->
+<h2><span class="num">04</span> DC-Copilot — Before vs After Enhancement</h2>
+<p class="h2-sub">Current production architecture vs Google-scale proposed changes</p>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:1.2rem 0">
+
+  <!-- BEFORE card -->
+  <div style="background:var(--surface);border:2px solid var(--red);border-radius:12px;padding:18px;box-shadow:var(--card-shadow)">
+    <div style="font-family:Outfit;font-weight:800;font-size:14px;color:var(--red);margin-bottom:12px">DC-COPILOT TODAY <span class="tag rd">~1K concurrent</span></div>
+    <table style="font-size:.8rem">
+    <tr><td style="width:110px;color:var(--text3)">Infra</td><td>ECS, single region, ALB</td></tr>
+    <tr><td style="color:var(--text3)">LLM</td><td style="color:var(--red);font-weight:600">Azure OpenAI API (300-800ms)</td></tr>
+    <tr><td style="color:var(--text3)">Intent</td><td style="color:var(--red);font-weight:600">LLM call (200ms)</td></tr>
+    <tr><td style="color:var(--text3)">State</td><td>DynamoDB single region (15ms)</td></tr>
+    <tr><td style="color:var(--text3)">Vectors</td><td>2 OpenSearch domains, HNSW</td></tr>
+    <tr><td style="color:var(--text3)">Cache</td><td style="color:var(--red)">None — direct Snowflake</td></tr>
+    <tr><td style="color:var(--text3)">Streaming</td><td>FastAPI SSE</td></tr>
+    <tr><td style="color:var(--text3)">Memory</td><td style="color:var(--red)">langmem 512 tokens, session only</td></tr>
+    <tr><td style="color:var(--text3)">TTFT</td><td style="color:var(--red);font-weight:700;font-size:.9rem">2,000 – 4,000ms</td></tr>
+    </table>
+  </div>
+
+  <!-- AFTER card -->
+  <div style="background:var(--surface);border:2px solid var(--green);border-radius:12px;padding:18px;box-shadow:var(--card-shadow)">
+    <div style="font-family:Outfit;font-weight:800;font-size:14px;color:var(--green);margin-bottom:12px">GOOGLE-SCALE <span class="tag gr">50M concurrent</span></div>
+    <table style="font-size:.8rem">
+    <tr><td style="width:110px;color:var(--text3)">Infra</td><td>K8s 10K pods, 8 regions, Anycast</td></tr>
+    <tr><td style="color:var(--text3)">LLM</td><td style="color:var(--green);font-weight:600">vLLM 7B/13B/70B (&lt;100ms)</td></tr>
+    <tr><td style="color:var(--text3)">Intent</td><td style="color:var(--green);font-weight:600">DistilBERT local (2ms)</td></tr>
+    <tr><td style="color:var(--text3)">State</td><td>Redis + Global Tables + DAX (&lt;1ms)</td></tr>
+    <tr><td style="color:var(--text3)">Vectors</td><td>Milvus 200 shards, IVF-PQ, 10B vectors</td></tr>
+    <tr><td style="color:var(--text3)">Cache</td><td style="color:var(--green)">L1+L2+L3 (72% hit rate)</td></tr>
+    <tr><td style="color:var(--text3)">Streaming</td><td>WebSocket + gRPC + token batching</td></tr>
+    <tr><td style="color:var(--text3)">Memory</td><td style="color:var(--green)">5-tier, 140TB, years</td></tr>
+    <tr><td style="color:var(--text3)">TTFT</td><td style="color:var(--green);font-weight:700;font-size:.9rem">&lt;150ms (13-27x faster)</td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="co"><b>Key insight:</b> DC-Copilot ke 3 patterns already Google-scale ready hain — two-phase design (chatInitialize + chat), DeferredDynamoDBSaver + FIXED_CHECKPOINT_ID, aur 3-layer tenant isolation. In changes ke saath yeh patterns scale karenge bina todhe.</div>
+
+<!-- ═══════════════ COST BREAKDOWN ═══════════════ -->
+<h2><span class="num">05</span> Cost Breakdown — $43M/year = ₹3.6/user/year</h2>
+
+<div class="diagram" style="padding:20px">
+<svg viewBox="0 0 800 100" xmlns="http://www.w3.org/2000/svg" font-family="Outfit, system-ui, sans-serif">
+  <!-- Stacked horizontal bar -->
+  <rect x="0" y="20" width="488" height="50" rx="6" fill="var(--red)" fill-opacity=".75"/>
+  <text x="244" y="50" text-anchor="middle" font-weight="700" font-size="11" fill="#fff">GPU $2.2M/mo (61%)</text>
+
+  <rect x="492" y="20" width="120" height="50" rx="0" fill="var(--blue)" fill-opacity=".75"/>
+  <text x="552" y="50" text-anchor="middle" font-weight="600" font-size="9" fill="#fff">Compute $1.55M</text>
+
+  <rect x="616" y="20" width="60" height="50" rx="0" fill="var(--teal)" fill-opacity=".75"/>
+  <text x="646" y="50" text-anchor="middle" font-weight="600" font-size="8" fill="#fff">Stream $270K</text>
+
+  <rect x="680" y="20" width="44" height="50" rx="0" fill="var(--amber)" fill-opacity=".75"/>
+  <text x="702" y="50" text-anchor="middle" font-weight="600" font-size="7" fill="#fff">State</text>
+
+  <rect x="728" y="20" width="36" height="50" rx="0" fill="var(--green)" fill-opacity=".75"/>
+  <text x="746" y="44" text-anchor="middle" font-weight="600" font-size="7" fill="#fff">Mem</text>
+
+  <rect x="768" y="20" width="32" height="50" rx="6" fill="var(--purple)" fill-opacity=".75"/>
+  <text x="784" y="44" text-anchor="middle" font-weight="600" font-size="7" fill="#fff">Vec</text>
+
+  <text x="400" y="92" text-anchor="middle" font-weight="700" font-size="12" fill="var(--node-text)">Total: ~$3.6M/month = $43M/year = $0.043/user/year = ₹3.6/user/year</text>
+</svg>
+</div>
+
+<p class="ann"><strong>Model routing is the #1 cost lever.</strong> Without routing: 3,300 GPUs = $6M/month. With routing (60%→7B): 1,200 GPUs = $2.2M/month. Savings: $3.8M/month = $45M/year. GPU is always the dominant cost in LLM-based systems.</p>
+
+
+<!-- ═══════════════ CHEAT SHEET ═══════════════ -->
+<h2><span class="num">06</span> Interview Quick-Fire Answers</h2>
+
+<div class="co"><b>"150ms kaise?"</b> — (1) Self-hosted LLM, (2) DistilBERT intent 2ms not 200ms, (3) Model routing 7B/13B/70B, (4) Speculative decoding 2.5x, (5) DAX &lt;1ms, (6) gRPC binary, (7) 150ms = TTFT not full response</div>
+
+<div class="co"><b>"50M concurrent kaise?"</b> — (1) 8 regions Anycast, (2) 500 Envoy 100K/node, (3) K8s HPA on connections not CPU, (4) 500-pod warm pool, (5) Redis 64 shards, (6) Global Tables, (7) Graceful degradation 3 levels</div>
+
+<div class="co"><b>"Long-term memory kaise?"</b> — (1) 5-tier pyramid, (2) Post-conv extraction (LLM+NER), (3) Ebbinghaus decay e^(-t/S), (4) Retrieve: recency×relevance×importance, (5) Bigtable 100TB $2.6K/mo, (6) GDPR right-to-forget, (7) $0.0016/user/year</div>
+
+<div class="co"><b>"Cost kitna?"</b> — $43M/year for 1B users = ₹3.6/user/year. GPU = 61%. Model routing saved $45M/year. Comparable to WhatsApp infra minus media storage.</div>
+
+<p style="color:var(--text3);font-size:.78rem;margin-top:2.5rem;text-align:center;padding-bottom:1.5rem">Google L5 ML Engineer Interview Prep · DC-Copilot Architecture Analysis · 50M Concurrent Scale</p>
+
+</body>
+</html>
